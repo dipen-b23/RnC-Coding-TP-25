@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <math.h>
+int main()
+{
+    int i,n1,n2;
+    printf("Enter the number of elements of the first array:");
+    scanf("%d",&n1);
+    int arr1[n1];
+    printf("Enter elements of the first array:");
+    for(i=0; i<n1; i++)
+        scanf("%d",&arr1[i]);
+    printf("Enter the number of elements of the second array:");
+    scanf("%d",&n2);
+    int arr2[n2];
+    printf("Enter elements of the second array:");
+    for(i=0; i<n2; i++)
+        scanf("%d",&arr2[i]);
+
+    int u[n1+n2];
+    for(i=0;i<n1;i++)
+        u[i]=arr1[i];
+
+    int a=n1;
+    for(i=0;i<n2;i++)
+    {
+       if(arr2[i]<=arr1[n1-1])
+       continue;
+       u[a++]=arr2[i];
+    }
+    printf("Union:");
+    for(i=0;i<a;i++)
+    {
+        printf("%d \t",u[i]);
+    }
+
+    int inter[n1>n2?n2:n1];
+    int c=0;
+    for(int i=0; i<n1; i++)
+    {
+        for(int j=0; j<n2; j++)
+        {
+            if (arr1[i]==arr2[j])
+                inter[c++]=arr1[i];
+            
+        }
+    }
+    printf("\nIntersection:");
+    for(i=0; i<c; i++)
+        printf("%d \t",inter[i]);
+    return 0;
+}
