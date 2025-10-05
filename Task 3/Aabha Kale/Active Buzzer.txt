@@ -1,0 +1,13 @@
+int BuzzPin=13;
+void setup()
+{
+  pinMode(BuzzPin, OUTPUT);
+}
+
+void loop()
+{
+	digitalWrite(BuzzPin, HIGH);
+  	delayMicroseconds(90);
+  	digitalWrite(BuzzPin,LOW);
+  	delayMicroseconds(1000);
+}
