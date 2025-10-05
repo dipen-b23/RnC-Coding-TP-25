@@ -1,0 +1,116 @@
+// C++ code
+//
+int time=100;
+int time2=30;
+int time3=80;
+int time4=500;
+int time5=50;
+int time6=40;
+int time7= 600;
+int time8=60;
+int time9=90;
+int time10=300;
+int time11=40;
+int time12=50;
+void setup()
+{
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+}
+
+void loop()
+{
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time2);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time2);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time3);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time3);
+  }
+  
+  //delay(100);
+  
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time4);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time4);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time5);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time5);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time6);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time6);
+  }
+  
+  
+  
+   for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time7);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time7);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time8);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time8);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time9);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time9);
+  }
+  
+  
+  
+   for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time10);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time10);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time11);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time11);
+  }
+  
+  for(int i=1;i<=100;i++){
+  digitalWrite(13,HIGH);
+  delayMicroseconds(time12);
+  digitalWrite(13,LOW);
+  delayMicroseconds(time12);
+  }
+  
+  }

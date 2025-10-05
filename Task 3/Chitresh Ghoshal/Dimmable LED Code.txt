@@ -1,0 +1,23 @@
+// C++ code
+int pin= A2;
+int val;
+float V2;
+
+
+void setup()
+{
+  pinMode(pin, INPUT);
+  pinMode(3,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+ val= analogRead(pin);
+  V2= (255.0/1023.0)* val;
+  analogWrite(3, V2);
+  Serial.println(V2);
+  
+  
+}
+  
