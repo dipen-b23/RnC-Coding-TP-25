@@ -1,0 +1,15 @@
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char s[100];
+    printf("Enter the string:");
+    gets(s);
+    char s1[100];
+    strcpy(s1,s);
+    strrev(s1);
+    if(strcmp(s,s1)==0)
+    printf("Palindrome");
+    else
+    printf("Not a Palindrome");
+}
