@@ -1,0 +1,79 @@
+#include <stdio.h>
+void main(){
+    int n;
+    scanf("%d",&n);
+    int arr1[n];
+     for(int i=0;i<n;i++){
+        scanf("%d",&arr1[i]);
+        
+    }
+    int m;
+    scanf("%d",&m);
+    int arr2[m];
+    for(int i=0;i<m;i++){
+        scanf("%d",&arr2[i]);
+        
+    }
+    int intersection[(m>n)?m:n];
+    int unions[m+n];
+    int count1=0;
+    //intersection
+    for(int i=0;i<n;i++){
+        int element=arr1[i];
+        
+        int flag=0;
+        for(int j=0;j<m;j++){
+            if(arr2[j]==element){
+                flag=1;
+                break;
+            }
+             }
+        if(flag==1){
+            intersection[count1]=element;
+            count1++;
+            
+        }
+        
+    }
+    printf("The intersection is");
+    for(int i=0;i<count1;i++){
+        printf("%d ",intersection[i]);
+        
+    }
+    //union
+    int count2=0;
+    for(int i=0;i<n;i++){
+        unions[i]=arr1[i];
+        count2++;
+    }
+    for(int i=0;i<m;i++){
+        int flag=0;
+        for(int j=0;j<count2;j++){
+            if(unions[j]==arr2[i]){
+                flag++;
+                break;
+            }
+        }
+        if(flag==0){
+            unions[count2]=arr2[i];
+            count2++;
+            
+        }
+      
+        
+    }
+      printf("The union is");
+    for(int i=0;i<count2;i++){
+        printf("%d ",unions[i]);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
