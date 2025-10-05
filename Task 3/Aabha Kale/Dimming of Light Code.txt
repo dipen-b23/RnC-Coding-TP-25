@@ -1,0 +1,19 @@
+int PotPin=A0;
+int LEDPin=13;
+int LEDVal;
+int PotVal;
+
+void setup()
+{
+  pinMode(PotPin, INPUT);
+  pinMode(LEDPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  	PotVal=analogRead(PotPin);
+  	LEDVal=(255./1023.)*PotVal;
+  	analogWrite(LEDPin, LEDVal);
+  	Serial.println(LEDVal);
+ }
