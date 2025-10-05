@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+int avg(int a[],int l)
+{
+    int sum=0;
+    for(int i=0;i<l;i++)
+    {
+        sum+=a[i];            
+    }
+    sum=sum/l;
+    return sum;
+}
+
+int main()
+{
+    int r,c;
+    printf("Enter the number of students and subjects: ");
+    scanf("%d%d",&r,&c);
+    int arr[r][c];
+    
+    printf("Enter the marks of each student: \n");
+    for(int i=0;i<r;i++)
+    {
+        for(int j=0;j<c;j++)
+            scanf("%d",&arr[i][j]);
+    }
+    
+    int (*ptr)(int[],int);
+    ptr=avg;
+    
+    printf("Average marks of each student: ");
+    for(int i=0;i<r;i++)
+        printf("%d\n",ptr(arr[i],c));
+    
+    return 0;
+}
