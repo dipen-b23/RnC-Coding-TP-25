@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <string.h>
+
+void find(char s1[100])
+{
+    char sub[100],sub1[100];
+    int flag=0,i;
+    printf("Enter substring to be found:");
+    scanf(" %[^\n]s", &sub);
+    for(i=0;i<strlen(s1);i++)
+    {
+        strncpy(sub1,s1+i,strlen(sub));
+        sub1[strlen(sub)]='\0';
+        if(strcmpi(sub,sub1)==0)
+        {
+            flag=1;
+            break;
+        }
+    }
+    if(flag==1)
+      printf("substring found\n");
+    else
+      printf("substring not found\n");
+}
+
+void delete(char s2[100])
+{
+    char sub[100],sub1[100];
+    printf("Enter substring to be deleted: ");
+    scanf(" %[^\n]s",&sub);
+    for(int i=0;i<strlen(s2);i++)
+    {
+        strncpy(sub1,s2+i,strlen(sub));
+        sub1[strlen(sub)]='\0';
+        if(strcmpi(sub,sub1)==0)
+        {
+            for(int j=i;j<strlen(s2);j++)
+            s2[j]=s2[j+strlen(sub)];
+            break;
+        }
+    }
+    printf("new string: %s\n",s2);
+}
+
+int main()
+{
+    char s[100];
+    int ch;
+    printf("Enter string: ");
+    gets(s);
+    printf("Enter 1 to find substring and 2 to delete substring:");
+    scanf("%d",&ch);
+
+    switch(ch)
+    {
+        case 1:
+        find(s);
+        break;
+        case 2:
+        delete(s);
+        break;
+        default:
+        printf("invalid choice");
+    }
+    return 0;
+}
