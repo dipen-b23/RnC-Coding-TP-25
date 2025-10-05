@@ -1,0 +1,112 @@
+// C++ code
+//
+int b1=5,b2=4,b3=3,b4=2;
+void setup()
+{
+  pinMode(b1, OUTPUT);
+  pinMode(b2, OUTPUT);
+  pinMode(b3, OUTPUT);
+  pinMode(b4, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, LOW);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, LOW);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, LOW);
+  delay(1000); 
+  
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, HIGH);
+  digitalWrite(b3, HIGH);
+  digitalWrite(b4, HIGH);
+  delay(1000); 
+}
+
+
+
