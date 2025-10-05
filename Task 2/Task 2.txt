@@ -1,0 +1,11 @@
+TASK 2
+Your Second task involves learning the remaining C language concepts including:
+
+•	 Strings
+•	Pointer Mechanisms (Passing by value, by reference)
+•	Functions(Declaration, Creation, Calling)
+•	Structures
+
+Your deadline to complete these tasks is 24th September.You may use the resources provided earlier, or any other resources of your choice to learn these topics.
+Acknowledge once read
+🔴🔴🔴
