@@ -1,0 +1,24 @@
+int inputpin=A0;
+int ledpin=6;
+int v;
+float v1;
+void setup()
+{
+  pinMode(6, OUTPUT);
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  v=analogRead(inputpin);
+  v1=v*5.0/1023.0;
+  Serial.println(v1);
+  if(v1<3.0)
+    analogWrite(ledpin, 80);
+  else if(v1>=3.0 && v1<=4.0)
+    analogWrite(ledpin, 160);
+    else
+    analogWrite(ledpin, 255);
+    
+}

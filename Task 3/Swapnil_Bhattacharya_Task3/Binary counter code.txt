@@ -1,0 +1,123 @@
+// C++ code
+//
+int pin10=10;
+int pin11=11;
+int pin12=12;
+int pin13=13;
+int timelag=850;
+
+
+void setup()
+{
+  pinMode(pin10, OUTPUT);
+  pinMode(pin11, OUTPUT);
+  pinMode(pin12, OUTPUT);
+  pinMode(pin12, OUTPUT);
+}
+
+void loop()
+{
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+   
+  digitalWrite(pin10, HIGH);  
+  digitalWrite(pin11, LOW);
+  digitalWrite(pin12, LOW); 
+  digitalWrite(pin13, LOW);
+  delay(timelag); 
+  
+  digitalWrite(pin10,LOW); 
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,LOW);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,LOW);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,LOW);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,LOW);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+  
+  digitalWrite(pin10,HIGH);
+  digitalWrite(pin11,HIGH);
+  digitalWrite(pin12,HIGH);
+  digitalWrite(pin13,HIGH);
+  delay(timelag);
+}
+
+
+
+
+
+
+
+

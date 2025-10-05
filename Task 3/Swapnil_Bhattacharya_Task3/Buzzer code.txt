@@ -1,0 +1,75 @@
+void setup()
+{
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop()
+{
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(13,HIGH);
+    delayMicroseconds(1220);
+    digitalWrite(13, LOW);
+    delayMicroseconds(1420);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(13,HIGH);
+    delayMicroseconds(1450);
+    digitalWrite(13, LOW);
+    delayMicroseconds(1440);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(12,HIGH);
+    delayMicroseconds(120);
+    digitalWrite(12, LOW);
+    delayMicroseconds(1844);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(12,HIGH);
+    delayMicroseconds(1464);
+    digitalWrite(12, LOW);
+    delayMicroseconds(165);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(11,HIGH);
+    delayMicroseconds(1260);
+    digitalWrite(11, LOW);
+    delayMicroseconds(152);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(11,HIGH);
+    delayMicroseconds(1445);
+    digitalWrite(11, LOW);
+    delayMicroseconds(1450);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(10,HIGH);
+    delayMicroseconds(120);
+    digitalWrite(10, LOW);
+    delayMicroseconds(125);
+  }
+  
+  for(int i=0;i<100;i++)
+  {
+    digitalWrite(10,HIGH);
+    delayMicroseconds(15);
+    digitalWrite(10, LOW);
+    delayMicroseconds(1544);
+  }
+  
+}
