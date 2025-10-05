@@ -1,0 +1,8 @@
+TASK 1
+Your first task involves learning basic C language concepts including:
+•         	Conditional Statements
+•         	Looping mechanisms (For, while, do-while)
+•         	Arrays (1D and 2D)
+
+Deadline: 3rd  September
+🔴🔴🔴
