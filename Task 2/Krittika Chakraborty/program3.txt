@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char s[100];
+    printf("Enter the string:");
+    gets(s);
+    int a=0,e=0,i=0,o=0,u=0,j=0;
+    while(s[j]!='\0')
+    {
+        if(s[j]=='a')
+        a++;
+        else if(s[j]=='e')
+        e++;
+        else if(s[j]=='i')
+        i++;
+        else if(s[j]=='o')
+        o++;
+        else if(s[j]=='u')
+        u++;
+        j++;
+    }
+    printf("Frequency: \na:%d \ne:%d \ni:%d \no:%d \nu:%d",a,e,i,o,u);
+}
