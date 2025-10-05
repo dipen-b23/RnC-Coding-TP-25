@@ -1,0 +1,235 @@
+1)
+#include <stdio.h>
+
+void main()
+{
+  char str[10];
+  scanf("%s",str);
+  int i=0,len=0;
+  while(str[i]!='\0'){
+    len++;
+    i++;
+  }
+  int flag=0;
+  for(int j=0;j<len/2;j++){
+    flag=1;
+    if(*(str+j)!=*(str+(len-j-1))){
+        flag=0;
+        break;
+    }
+  }
+  if(flag==1){
+    printf("Is a palindrome");
+  }else{
+    printf("Not a palindrome");
+  }
+}
+
+2)
+#include <stdio.h>
+
+int main() {
+    int x=10;
+    int y=5;
+    int* ptr1=&x;
+    int* ptr2=&y;
+    
+    int temp=*ptr1;
+    *ptr1=*ptr2;
+    *ptr2=temp;
+    
+    printf("X= %d Y= %d",x,y);
+
+    return 0;
+}
+
+
+3)
+#include <stdio.h>
+
+
+void avg(int x, int arr[][5]) {
+    for (int i = 0; i < x; i++) {
+        float sum = 0.0;
+        for (int j = 0; j < 5; j++) {
+            sum += arr[i][j];
+        }
+        float average = sum / 5.0f;
+        printf("The avg of student %d is = %f \n", i + 1, average);
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+
+    int arr[n][5];
+
+    for (int i = 0; i < n; i++) {
+        printf("Enter 5 marks for student %d: ", i + 1);
+        for (int j = 0; j < 5; j++) {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+
+    avg(n, arr);
+    return 0;
+}
+
+4)
+#include <stdio.h>
+
+void sum_rows(int m, int n, int a[10][10])
+{
+    for (int i = 0; i < m; i++) {
+        int sum = 0;
+        for (int j = 0; j < n; j++)
+            sum += a[i][j];
+        printf("Sum of row %d = %d\n", i + 1, sum);
+    }
+}
+
+void sum_col(int m, int n, int a[10][10])
+{
+    for (int j = 0; j < n; j++) {
+        int sum = 0;
+        for (int i = 0; i < m; i++)
+            sum += a[i][j];
+        printf("Sum of column %d = %d\n", j + 1, sum);
+    }
+}
+
+void transpose(int m, int n, int a[10][10])
+{
+    printf("Transpose of the matrix:\n");
+    for (int j = 0; j < n; j++) {
+        for (int i = 0; i < m; i++)
+            printf("%d ", a[i][j]);
+        printf("\n");
+    }
+}
+
+int main(void)
+{
+    int m, n;
+    printf("Enter rows and columns: ");
+    scanf("%d %d", &m, &n);
+
+    int a[10][10];  // keep as fixed-size for simplicity
+    printf("Enter the matrix elements:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &a[i][j]);
+        }
+    }
+
+    int x;
+    printf("\nMenu:\n");
+    printf("1. Sum of rows\n");
+    printf("2. Sum of columns\n");
+    printf("3. Transpose\n");
+    printf("Enter choice: ");
+    scanf("%d", &x);
+
+    switch (x) {
+        case 1: sum_rows(m, n, a); break;
+        case 2: sum_col(m, n, a);  break;
+        case 3: transpose(m, n, a); break;
+        default: printf("Invalid choice\n"); break;
+    }
+    return 0;
+}
+
+5)#include <stdio.h>
+
+
+int main(void)
+{
+    char str[200];
+    int a = 0, e = 0, i = 0, o = 0, u = 0;
+
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin); 
+
+    for (int j = 0; str[j] != '\0'; j++) {
+       if(str[j]=='a'){
+           a++;
+       }
+       if(str[j]=='e'){
+           e++;
+       }
+       if(str[j]=='i'){
+           i++;
+       }
+       if(str[j]=='o'){
+           o++;
+       }
+       if(str[j]=='u'){
+           u++;
+       }
+        }
+        printf("Frequency of vowels: \n");
+    printf("a: %d\n", a);
+    printf("e: %d\n", e);
+    printf("i: %d\n", i);
+    printf("o: %d\n", o);
+    printf("u: %d\n", u);
+
+    return 0;
+    }
+
+    
+
+6)
+
+
+7)#include <stdio.h>
+#include <string.h>
+
+int sub(char sub1[], char str[])
+{
+    int pos = 0, flag = -1;
+    for (int i = 0; i <= strlen(str) - strlen(sub1); i++)
+    {
+        pos = i;
+        flag = 1;
+        for (int j = 0; j < strlen(sub1); j++)
+        {
+            if (str[i + j] != sub1[j])
+            {
+                flag = -1;
+                break;
+            }
+        }
+        if (flag == 1)
+        {
+            break;
+        }
+    }
+
+    return pos;
+}
+void delete(char del[], char str[])
+{
+    int pos = sub(del, str);
+    for (int i = 0; i <= strlen(del); i++)
+    {
+        str[i+pos] = str[i +pos+ strlen(del)];
+        str[i+pos+ strlen(del)] = '\0';
+       
+    }
+    printf("%s",str);
+}
+
+void main()
+{
+    char mstr[100];
+    scanf("%s", mstr);
+    char del[10];
+    scanf("%s", del);
+    int position = sub(del, mstr);
+    printf("Position is %d \n", position);
+    delete(del, mstr);
+}
+
