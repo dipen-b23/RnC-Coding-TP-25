@@ -1,0 +1,53 @@
+Define a structure Book with members title, author, and price. Write a program to sort an array of books in ascending order of price.
+
+Code:
+#include <stdio.h>
+#include <string.h>
+struct Book
+{
+    char title[20];
+    char author[20];
+    int price;
+};
+
+int main()
+{
+    int n;
+    printf("Enter the number of books: ");
+    scanf("%d",&n);
+    struct Book s1[n];
+    for(int i=0;i<n;i++)
+    {
+        printf("Enter the title of book %d:",(i+1));
+        scanf("%s",s1[i].title);
+        printf("Enter the author of book %d:",(i+1));
+        scanf("%s",s1[i].author);
+        printf("Enter the price of book %d:",(i+1));
+        scanf("%d",&s1[i].price);
+    }
+    
+    for(int i=0;i<n-1;i++)
+    {
+        for(int j=0;j<n-i-1;j++)
+        {
+            if(s1[j].price>s1[j+1].price)
+            {
+                int t=s1[j].price;
+                s1[j].price=s1[j+1].price;
+                s1[j+1].price=t;
+                char u[20];
+                char v[20];
+                strcpy(u,s1[j].title);
+                strcpy(s1[j].title,s1[j+1].title);
+                strcpy(s1[j+1].title,u);
+                strcpy(v,s1[j].author);
+                strcpy(s1[j].author,s1[j+1].author);
+                strcpy(s1[j+1].author,v);
+            }
+        }
+    }
+    printf("Arranged books: \n");
+    for(int i=0;i<n;i++)
+        printf("%s\t%s\t%d\n",s1[i].title,s1[i].author,s1[i].price);
+    return 0;
+}
