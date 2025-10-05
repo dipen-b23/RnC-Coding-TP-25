@@ -1,0 +1,34 @@
+#include <stdio.h>
+int m,n;
+void average(int arr[m][n])
+{
+    float avg=0;
+    for(int i=0; i<m;i++)
+    {
+        for(int j=0;j<n;j++)
+        avg=avg+arr[i][j];
+
+        avg/=n;
+        printf("Average of student %d is %f\n",(i+1),avg);
+        avg=0;
+    }
+
+}
+int main()
+{
+    int i,j;
+    printf("enter the no. of students:");
+    scanf("%d",&m);
+    printf("enter the no. of subjects:");
+    scanf("%d",&n);
+    int arr[m][n];
+
+    printf("enter the grades:\n");
+    for(i=0;i<m;i++)
+    {
+        printf("Student %d:",(i+1));
+        for(j=0;j<n;j++)
+        scanf("%d",&arr[i][j]);
+    }
+    average(arr);
+}
