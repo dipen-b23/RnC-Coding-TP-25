@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+struct Book
+{
+    char title[20];
+    char author[20];
+    int price;
+};
+
+int main()
+{
+    int n;
+    printf("Enter the number of books: ");
+    scanf("%d",&n);
+    struct Book s[n];
+    for(int i=0;i<n;i++)
+    {
+        printf("Enter the title of book %d:",(i+1));
+        scanf("%s",s[i].title);
+        printf("Enter the author of book %d:",(i+1));
+        scanf("%s",s[i].author);
+        printf("Enter the price of book %d:",(i+1));
+        scanf("%d",&s[i].price);
+    }
+    
+    for(int i=0;i<n-1;i++)
+    {
+        for(int j=0;j<n-i-1;j++)
+        {
+            if(s[j].price>s[j+1].price)
+            {
+                int t=s[j].price;
+                s[j].price=s[j+1].price;
+                s[j+1].price=t;
+                char u[20];
+                char v[20];
+                strcpy(u,s[j].title);
+                strcpy(s[j].title,s[j+1].title);
+                strcpy(s[j+1].title,u);
+                strcpy(v,s[j].author);
+                strcpy(s[j].author,s[j+1].author);
+                strcpy(s[j+1].author,v);
+            }
+        }
+    }
+    printf("Arranged books: \n");
+    for(int i=0;i<n;i++)
+        printf("%s\t%s\t%d\n",s[i].title,s[i].author,s[i].price);
+    return 0;
+}
