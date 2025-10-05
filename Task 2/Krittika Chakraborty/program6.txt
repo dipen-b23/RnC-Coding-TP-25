@@ -1,0 +1,23 @@
+#include <stdio.h>
+int m;
+int largest(int i, int arr[m],int max)
+{
+    if(i==m)
+    return max;
+    else if(arr[i]>max)
+    return largest(++i,arr,arr[i]);
+    else
+    return largest(++i,arr,max);
+}
+int main()
+{
+    printf("Enter the size:");
+    scanf("%d",&m);
+    int arr[m];
+    printf("Enter the elements of the array:");
+    for(int i=0; i<m; i++)
+        scanf("%d",&arr[i]);
+    
+    int max=largest(0,arr,arr[0]);
+    printf("Largest:%d",max);
+}
