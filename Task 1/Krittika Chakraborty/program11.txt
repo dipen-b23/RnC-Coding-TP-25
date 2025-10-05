@@ -1,0 +1,40 @@
+#include <stdio.h>
+int main()
+{
+    int n,k;
+    printf("Enter the number of elements:");
+    scanf("%d",&n);
+    int arr[n];
+    int arr1[n];
+    printf("Enter elements:");
+    for(int i=0; i<n; i++)
+        scanf("%d",&arr[i]);
+    printf("Enter k:");
+    scanf("%d",&k);
+
+    char move;
+    printf("Enter L for left and R for right:");
+    scanf(" %c",&move);
+
+    if(move=='R')
+    {
+        for(int i=0;i<n; i++)
+        {
+            arr1[i]=arr[(i+k)%n];
+        }
+    }
+    else
+    {
+        for(int i=0;i<n; i++)
+        {
+            if(i-k<0)
+            arr1[i]=arr[n+(i-k)];
+            else
+            arr1[i]=arr[i-k];
+        }
+    }
+    printf("Rotated Array: ");
+    for(int i=0; i<n; i++)
+    printf("%d\t",arr1[i]);
+    return 0;
+}
