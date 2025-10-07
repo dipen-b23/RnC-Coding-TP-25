@@ -1,0 +1,22 @@
+int buzz=5;
+int potpin=A3;
+int potval;
+int t=500;
+void setup()
+{
+  pinMode(buzz, OUTPUT);
+  pinMode(potpin, INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  potval=analogRead(potpin);
+  Serial.println(potval);
+  if(potval>1000)
+  {
+    digitalWrite(buzz,HIGH);
+    delay(t);
+    digitalWrite(buzz,LOW);
+  }
+}
