@@ -1,0 +1,44 @@
+#include <Servo.h>
+Servo myservo;
+int trigout= 10;
+int servopin= 11;
+int echoin= 9;
+float duration;
+float distance;
+void setup() {
+
+  pinMode(trigout, OUTPUT);
+  pinMode(echoin, INPUT);
+  Serial.begin(9600);
+  myservo.attach(servopin);
+  int pos = 0; 
+}
+
+void loop() {
+  digitalWrite(trigout, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigout, HIGH);
+  delayMicroseconds(10);
+  duration = pulseIn(echoin, HIGH);
+  distance = (duration*0.0343)/2.;
+  Serial.println(distance);
+  
+  if(distance>10){
+    for (int pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
+    // in steps of 1 degree
+    myservo.write(pos);              // tell servo to go to position in variable 'pos'
+    /*delay(15);*/                       // waits 15 ms for the servo to reach the position
+  }
+  
+  }
+
+  else{
+    for (int pos = 180; pos >= 0; pos -= 1) { // goes from 180 degrees to 0 degrees
+    myservo.write(pos);              // tell servo to go to position in variable 'pos'
+   /* delay(15);*/                       // waits 15 ms for the servo to reach the position
+  }
+    
+  }
+  delay(200);
+
+}
