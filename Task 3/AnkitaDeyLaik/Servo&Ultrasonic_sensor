@@ -1,0 +1,39 @@
+#include <Servo.h>
+Servo s;
+int Spin = 12;
+int EchoPin = 6;
+int TrigPin = 7;
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(9600);
+pinMode(TrigPin, INPUT);
+pinMode(EchoPin, OUTPUT);
+s.attach(Spin);
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+digitalWrite(TrigPin, LOW);
+delay(2);
+digitalWrite(TrigPin, HIGH);
+delay(10);
+digitalWrite(TrigPin, LOW);
+delay(2);
+
+int US = pulseIn(EchoPin, HIGH);
+Serial.println(US);
+delay(50);
+int dist = US*(0.0343/2);
+Serial.println(dist);
+delay(100);
+if(dist>15){
+s.write(0);
+delay(1000);
+}
+else
+{
+s.write(90);
+delay(1000);
+}
+}
