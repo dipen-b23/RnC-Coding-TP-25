@@ -1,0 +1,79 @@
+// C++ code
+//
+int inPin1=13;
+int inPin2=12;
+int inPin3= 5;
+int inPin4=6;
+int PWMpin1= 3;
+int PWMpin2= 9;
+int time= 200;
+int speed;
+int potPin=A0;
+int fMove= 2;
+void setup()
+{
+  pinMode(inPin1, OUTPUT);
+  pinMode(inPin2, OUTPUT);
+  pinMode(inPin3, OUTPUT);
+  pinMode(inPin4, OUTPUT);
+  pinMode(PWMpin1, OUTPUT);
+  pinMode(PWMpin2, OUTPUT);
+  pinMode(potPin, INPUT);
+  pinMode(2, INPUT_PULLUP);//forward switch
+  pinMode(8, INPUT);//backward switch
+  pinMode(7, INPUT);//left switch
+  pinMode(10, INPUT);//right switch
+
+  //pinMode(fMove, INPUT);
+  //digitalWrite(fMove, HIGH);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int potVal= analogRead(potPin);
+  speed= map(potVal, 0, 1023, 0, 255);
+  Serial.println(potVal);
+ // delay(time);
+  analogWrite(PWMpin1, speed);
+  analogWrite(PWMpin2, speed);
+  
+  //forward
+  if(digitalRead(2)==LOW){
+  digitalWrite(inPin1, HIGH);
+  digitalWrite(inPin2, LOW);
+    digitalWrite(inPin4, HIGH);
+  digitalWrite(inPin3, LOW);
+  }
+  
+  //backward
+  else if( digitalRead(8)==LOW){
+  digitalWrite(inPin2, HIGH);
+  digitalWrite(inPin1, LOW);
+    digitalWrite(inPin3, HIGH);
+  digitalWrite(inPin4, LOW);}
+  
+  
+  //left
+  else if( digitalRead(7)==LOW){
+digitalWrite(inPin1, LOW);
+  digitalWrite(inPin2, LOW);
+    digitalWrite(inPin4, HIGH);
+  digitalWrite(inPin3, LOW);}
+  
+  //right
+   else if( digitalRead(10)==LOW){
+digitalWrite(inPin1, HIGH);
+  digitalWrite(inPin2, LOW);
+    digitalWrite(inPin4, LOW);
+  digitalWrite(inPin3, LOW);}
+  
+  else{
+  digitalWrite(inPin1, LOW);
+  digitalWrite(inPin2, LOW);
+    digitalWrite(inPin4, LOW);
+  digitalWrite(inPin3, LOW);
+  }
+    
+  //delay(time);   
+  }
