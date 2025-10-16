@@ -1,1 +1,88 @@
+// C++ code
+//
+int spinrt = 5;
+int spinlt = 9;
+int dirrt1 = 4;
+int dirrt2 = 3;
+int dirlt3 = 8;
+int dirlt4 = 10;
+int potpin = A2;
+int potVal;
+int mspeed;
+int bpinfwd = 12;
+int bpinbkd = 13;
+int bpinlt = 11;
+int bpinrt = 7;
+int Buttonread1;
+int Buttonread2;
+int Buttonread3;
+int Buttonread4;
+int dt = 100;
+void setup()
+{
+  pinMode(spinrt,OUTPUT);
+  pinMode(spinlt,OUTPUT);
+  pinMode(dirrt1,OUTPUT);
+  pinMode(dirrt2,OUTPUT);
+  pinMode(dirlt3,OUTPUT);
+  pinMode(dirlt4,OUTPUT);
+  pinMode(potpin,INPUT);
+  pinMode(bpinfwd,INPUT);
+  pinMode(bpinbkd,INPUT);
+  pinMode(bpinlt,INPUT);
+  pinMode(bpinrt,INPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  Buttonread1 = digitalRead(bpinfwd);
+  Buttonread2 = digitalRead(bpinbkd);
+  Buttonread3 = digitalRead(bpinlt);
+  Buttonread4 = digitalRead(bpinrt);
+  potVal = analogRead(potpin);
+  mspeed = map(potVal, 0, 1023, 0, 255);
+  delay (dt);
+if(Buttonread1==1){
+    digitalWrite(dirrt1,HIGH);
+    digitalWrite(dirrt2,LOW);
+    digitalWrite(dirlt3,HIGH);
+    digitalWrite(dirlt4,LOW);
+    analogWrite(spinrt,mspeed);
+    analogWrite(spinlt,mspeed);
+}
+else if (Buttonread2 == 1)
+  {
+    digitalWrite(dirrt1,LOW);
+    digitalWrite(dirrt2,HIGH);
+    digitalWrite(dirlt3,LOW);
+    digitalWrite(dirlt4,HIGH);
+    analogWrite(spinrt,mspeed);
+    analogWrite(spinlt,mspeed);
+  }
+  else if (Buttonread3 == 1)
+  {
+    digitalWrite(dirrt1,HIGH);
+    digitalWrite(dirrt2,LOW);
+    digitalWrite(dirlt3,LOW);
+    digitalWrite(dirlt4,LOW);
+    analogWrite(spinrt,mspeed);
+    analogWrite(spinlt,0);
+  }
+  else if (Buttonread4 == 1)
+  {
+    digitalWrite(dirrt1,LOW);
+    digitalWrite(dirrt2,LOW);
+    digitalWrite(dirlt3,HIGH);
+    digitalWrite(dirlt4,LOW);
+    analogWrite(spinrt,0);
+    analogWrite(spinlt,mspeed);
+  }
+  else
+  {
+    analogWrite(spinrt,0);
+    analogWrite(spinlt,0);
+  }
+}
+
 
