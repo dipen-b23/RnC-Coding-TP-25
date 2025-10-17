@@ -1,0 +1,82 @@
+int speed1=11;
+int speed2=3;
+int rightpin=5;
+int leftpin=2;
+int d1=10;
+int d2=9;
+int D1=7;
+int D2=6;
+int speedcontrol=A0;
+int speedset;
+int B1val;
+int mSpeed=0;
+int dt=500;
+int p1;
+int p2;
+int p3;
+
+void setup()
+{
+  
+ pinMode(speed1,OUTPUT);
+  pinMode(speed2,OUTPUT);
+pinMode(d1,OUTPUT);
+pinMode(d2,OUTPUT);
+pinMode(rightpin, INPUT_PULLUP);
+  pinMode(leftpin, INPUT_PULLUP);
+  pinMode(D1,OUTPUT);
+pinMode(D2,OUTPUT);
+pinMode(speedcontrol,INPUT);
+Serial.begin(9600);
+  
+}
+
+void loop()
+{
+    digitalWrite(d1, HIGH);   
+    digitalWrite(d2, LOW);
+  
+    digitalWrite(D1, HIGH);   
+    digitalWrite(D2, LOW);
+  
+  p1=digitalRead(rightpin);
+  p2=digitalRead(leftpin);
+  
+  if(p1==1){
+    delay(dt);
+    digitalWrite(rightpin, LOW);
+  }
+  if(p2==1){
+    delay(dt);
+    digitalWrite(leftpin, LOW);
+  }
+  Serial.println(p1);
+  delay(dt);
+  Serial.println(p2);
+  delay(dt);
+    speedset=analogRead(speedcontrol);
+  
+  if(p1==LOW && p2==LOW){
+    analogWrite(speed1,speedset);
+    analogWrite(speed2,speedset);
+   
+   
+  }
+    
+  if(p1==LOW && p2==HIGH){
+    analogWrite(speed1,speedset);
+    analogWrite(speed2,0);
+    
+  }
+  
+  if(p1==HIGH && p2==LOW){
+    analogWrite(speed1,0);
+    analogWrite(speed2,speedset);
+   
+  }
+  
+ 
+
+   
+  
+}
