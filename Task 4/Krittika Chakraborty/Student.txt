@@ -1,0 +1,16 @@
+class Student:
+    name = ""
+    marks = []
+
+    def __init__(self, name1, marks1):
+        self.name = name1;
+        self.marks = list(marks1)
+
+    def total(self):
+        sum = 0
+        for i in range(len(self.marks)):
+            sum = sum + self.marks[i]
+        return sum
+
+    def average(self):
+        return (self.total() / len(self.marks))
