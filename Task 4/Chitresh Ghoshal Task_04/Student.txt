@@ -1,0 +1,18 @@
+class Student:
+
+    def __init__(self, name, marks ):
+        self.name=name
+        self.marks=marks
+        
+    def total(self):
+        tot=0
+        for i in self.marks:
+            tot+=i
+        return tot
+    
+    def average(self):
+        avg=0
+        total= self.total()
+        avg= total/ len(self.marks)
+        return avg
+    

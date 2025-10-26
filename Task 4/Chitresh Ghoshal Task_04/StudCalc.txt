@@ -1,0 +1,47 @@
+from Student import Student
+
+
+def create_student(no, subs): 
+    arr=[]
+    for i in range(no):
+        name=input("Enter name of student: ")
+        marks=[]
+        for j in range(subs):
+            marks.append(int(input("Enter marks: ")))
+        
+        markTuple= tuple(marks)
+        stud= Student(name, markTuple)
+        arr.append(stud)
+    return arr
+
+def analyze_students(arr):
+    tot_avg=0.0
+    for i in arr:
+      tot_avg+= i.total()
+    tot_avg/= len(arr)
+    print("Average marks of all students combined: "+ str(tot_avg))
+
+    for i in range(len(arr)-1):
+        for j in range(len(arr)-i-1):
+            if(arr[j].total()<arr[j+1].total()):
+                t= arr[j]
+                arr[j]=arr[j+1]
+                arr[j+1]=t
+
+    print(str(arr[0].name)+" has highest total of "+str(arr[0].total()))
+    print(str(arr[-1].name)+" has lowest total of "+str(arr[-1].total()))
+
+    print("Student names sorted acc to decreasing marks: ")
+    for i in arr:
+        print(i.name)
+    
+
+def main():
+    no= int(input("Enter number of students"))
+    subs= int(input("Enter number of subjects: "))
+    arr= create_student(no, subs)
+    analyze_students(arr)
+
+main()
+
+
