@@ -1,0 +1,57 @@
+class Student:
+    def __init__(self,name1,marks1):
+        self.name=name1
+        mark_list=marks1.split()
+        self.mark=tuple(int(m) for m in mark_list)
+    def total(self):
+        return sum(self.mark)
+    def avg(self):
+        t=sum(self.mark)
+        return t/len(self.mark)
+
+class Analyze_students:
+    def __init__(self,student_list1):
+        self.student_list=student_list1
+    def cavg(self):
+        c=0
+        for i in range(len(self.student_list)):
+            c+=self.student_list[i].avg()
+            c=c/len(self.student_list)
+        return c
+    def chigh(self):
+        j=0
+        for i in range(len(self.student_list)):
+            if self.student_list[i].total()>self.student_list[j].total():
+                j=i
+        print(f"the highest is {self.student_list[j].name}: {self.student_list[j].total()}")
+    def clow(self):
+        j=0
+        for i in range(len(self.student_list)):
+            if self.student_list[i].total()<self.student_list[j].total():
+                j=i
+        print(f"the lowest is {self.student_list[j].name}: {self.student_list[j].total()}")
+    def ssort(self):
+        for i in range(len(self.student_list)):
+            for j in range(i+1,len(self.student_list)):
+                if self.student_list[i].total()<self.student_list[j].total():
+                    t=self.student_list[i]
+                    self.student_list[i]=self.student_list[j]
+                    self.student_list[j]=t
+        for i in range(len(self.student_list)):
+            print(f"For {self.student_list[i].name} the total is {self.student_list[i].total()}")    
+def main():
+        student_list=[]
+        j=int(input("enter no of student\n"))
+        for i in range(j):
+            n=input("enter name\n")
+            m=input("input marks by space\n")
+            student_list.append(Student(n,m))
+        for i in range(j):
+            print(f"For {student_list[i].name} the total is {student_list[i].total()} the average is {student_list[i].avg()}")
+        x=Analyze_students(student_list)
+        x.cavg()
+        x.chigh()
+        x.clow()
+        x.ssort()
+
+main()
