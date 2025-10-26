@@ -1,0 +1,72 @@
+class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    def total(self):
+        return sum(self.marks)
+
+    def average(self):
+        return self.total() / len(self.marks)
+
+
+def create_students():
+    n1 = int(input("Enter the number of students: "))
+    n2 = int(input("Enter the number of subjects: "))
+
+    s = []  
+
+    for i in range(1, n1 + 1):
+        ai = input(f"\nEnter the name of student {i}: ")
+        mj = []
+        print(f"Enter marks for {ai}:")
+        for j in range(1, n2 + 1):
+            mark = int(input(f"Subject {j}: "))
+            mj.append(mark)
+
+        student = Student(ai, mj)
+        s.append(student)
+
+    return s
+
+
+def analyze_students(s):
+    print("\nRESULTS:")
+    for i, st in enumerate(s, start=1):
+        print(f"{i}. {st.name} - Total marks: {st.total()}, Average marks: {st.average():.2f}")
+    for i in range(len(s)):
+        a=0
+        a+=s[i].average()
+    print("Average marks of all students :"+str(a/len(s)))
+    
+    highest = s[0]
+    lowest = s[0]
+
+    for st in s:
+        if st.total() > highest.total():
+            highest = st
+        if st.total() < lowest.total():
+            lowest = st
+
+    print(f"\nHighest marks: {highest.name} ({highest.total()})")
+    print(f"Lowest marks: {lowest.name} ({lowest.total()})")
+
+    
+    for i in range(len(s)):
+        for j in range(i + 1, len(s)):
+            if s[i].total() < s[j].total():
+                s[i], s[j] = s[j], s[i]
+
+    print("\nStudents sorted by total marks (in descending order):")
+    for st in s:
+        print(f"{st.name}: {st.total()}")
+
+
+def main():
+    s = create_students()
+    analyze_students(s)
+
+
+
+if __name__ == "__main__":
+    main()
