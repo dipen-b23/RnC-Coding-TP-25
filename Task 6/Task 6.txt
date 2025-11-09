@@ -1,0 +1,7 @@
+Task 6 is to learn essential Python libraries for the upcoming ML tasks. The deadline for this task is 8th November acknowledge this message.
+
+Libraries to learn:
+NumPy
+Pandas
+Matplotlib
+Seaborn
