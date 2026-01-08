@@ -1,0 +1,4 @@
+Image Watermarking Problem
+Write a program using OpenCV to load an image from the system.
+Add a text or logo watermark at a user-defined position using transparency.
+Save the final watermarked image as a new file.
