@@ -1,0 +1,334 @@
+/**
+ * FINAL ESP32-CAM ROBOT MASTER CODE
+ * Features: WebSockets, PID Cruise, Crash Detection, Active Braking, Station Mode
+ * Author: Gemini & User
+ */
+
+#include "esp_camera.h"
+#include <WiFi.h>
+#include <WebServer.h>
+#include <WebSocketsServer.h> // Library: "WebSockets" by Markus Sattler
+#include <NewPing.h>
+#include <Adafruit_MPU6050.h>
+#include <Wire.h>
+
+// ==========================
+// 1. CONFIGURATION (EDIT THIS)
+// ==========================
+const char* ssid = "YOUR_HOTSPOT_NAME";      // <--- CHANGE THIS
+const char* password = "YOUR_HOTSPOT_PASSWORD"; // <--- CHANGE THIS
+
+// --- STATIC IP SETTINGS ---
+// Android Hotspot Default: 192.168.43.100
+// iPhone Hotspot Default:  172.20.10.100 (Change '43' to '20' and '10' below)
+IPAddress local_IP(192, 168, 43, 100); 
+IPAddress gateway(192, 168, 43, 1);   
+IPAddress subnet(255, 255, 255, 0);
+
+// --- PIN DEFINITIONS ---
+#define PIN_AIN1 12
+#define PIN_AIN2 13
+#define PIN_BIN1 1   // Unplug to Upload!
+#define PIN_BIN2 3   // Unplug to Upload!
+#define PIN_TRIG 16
+#define PIN_ECHO 2
+#define PIN_SDA 14
+#define PIN_SCL 15
+
+// --- CAMERA PINS (AI Thinker) ---
+#define PWDN_GPIO_NUM     32
+#define RESET_GPIO_NUM    -1
+#define XCLK_GPIO_NUM      0
+#define SIOD_GPIO_NUM     26
+#define SIOC_GPIO_NUM     27
+#define Y9_GPIO_NUM       35
+#define Y8_GPIO_NUM       34
+#define Y7_GPIO_NUM       39
+#define Y6_GPIO_NUM       36
+#define Y5_GPIO_NUM       21
+#define Y4_GPIO_NUM       19
+#define Y3_GPIO_NUM       18
+#define Y2_GPIO_NUM        5
+#define VSYNC_GPIO_NUM    25
+#define HREF_GPIO_NUM     23
+#define PCLK_GPIO_NUM     22
+
+// --- PWM SETTINGS ---
+const int freq = 30000;
+const int res = 8;
+const int chA1 = 0; const int chA2 = 1; 
+const int chB1 = 2; const int chB2 = 3;
+
+// ==========================
+// 2. GLOBAL OBJECTS
+// ==========================
+WebServer server(80);
+WebSocketsServer webSocket = WebSocketsServer(81);
+NewPing sonar(PIN_TRIG, PIN_ECHO, 200);
+Adafruit_MPU6050 mpu;
+
+// --- STATE VARIABLES ---
+int currentSpeed = 200;
+String driveMode = "MANUAL"; // Options: MANUAL, CRUISE, CRASHED
+int targetDistance = 20;     // PID Target (cm)
+float Kp = 5.0;              // PID Aggressiveness
+
+// ==========================
+// 3. HARDWARE SETUP
+// ==========================
+void startCamera() {
+  camera_config_t config;
+  config.ledc_channel = LEDC_CHANNEL_0;
+  config.ledc_timer = LEDC_TIMER_0;
+  config.pin_d0 = Y2_GPIO_NUM;
+  config.pin_d1 = Y3_GPIO_NUM;
+  config.pin_d2 = Y4_GPIO_NUM;
+  config.pin_d3 = Y5_GPIO_NUM;
+  config.pin_d4 = Y6_GPIO_NUM;
+  config.pin_d5 = Y7_GPIO_NUM;
+  config.pin_d6 = Y8_GPIO_NUM;
+  config.pin_d7 = Y9_GPIO_NUM;
+  config.pin_xclk = XCLK_GPIO_NUM;
+  config.pin_pclk = PCLK_GPIO_NUM;
+  config.pin_vsync = VSYNC_GPIO_NUM;
+  config.pin_href = HREF_GPIO_NUM;
+  config.pin_sscb_sda = SIOD_GPIO_NUM;
+  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_pwdn = PWDN_GPIO_NUM;
+  config.pin_reset = RESET_GPIO_NUM;
+  config.xclk_freq_hz = 20000000;
+  config.pixel_format = PIXFORMAT_JPEG;
+  config.frame_size = FRAMESIZE_QVGA; 
+  config.jpeg_quality = 14; 
+  config.fb_count = 1;
+  esp_camera_init(&config);
+}
+
+// Active Braking Motor Logic
+void setMotors(int speed, int leftDir, int rightDir) {
+  speed = constrain(speed, 0, 255);
+  // Left Motor
+  if(leftDir==1) { ledcWrite(chA1, speed); ledcWrite(chA2, 0); }
+  else if(leftDir==-1) { ledcWrite(chA1, 0); ledcWrite(chA2, speed); }
+  else { ledcWrite(chA1, 255); ledcWrite(chA2, 255); } // Brake
+  
+  // Right Motor
+  if(rightDir==1) { ledcWrite(chB1, speed); ledcWrite(chB2, 0); }
+  else if(rightDir==-1) { ledcWrite(chB1, 0); ledcWrite(chB2, speed); }
+  else { ledcWrite(chB1, 255); ledcWrite(chB2, 255); } // Brake
+}
+
+// ==========================
+// 4. THE BRAIN (Loop Logic)
+// ==========================
+void driveLoop() {
+  webSocket.loop(); // Handle incoming commands
+
+  // A. CRASH DETECTION (MPU6050)
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+  
+  // 30 m/s^2 is roughly 3G force
+  if (abs(a.acceleration.x) > 30 || abs(a.acceleration.y) > 30) {
+    if (driveMode != "CRASHED") {
+      driveMode = "CRASHED";
+      setMotors(0, 0, 0); // Emergency Brake
+      webSocket.broadcastTXT("{\"status\":\"CRASHED\"}"); // Alert Phone
+    }
+  }
+
+  // B. ADAPTIVE CRUISE (PID Controller)
+  if (driveMode == "CRUISE") {
+    int distance = sonar.ping_cm();
+    if (distance == 0) distance = 200; // Filter "0" noise
+    
+    // Telemetry: Send distance to phone
+    String json = "{\"status\":\"CRUISE\",\"dist\":" + String(distance) + "}";
+    webSocket.broadcastTXT(json);
+
+    int error = distance - targetDistance;
+    
+    if (error > 0) {
+      // Too Far -> Drive Proportional to Error
+      int spd = error * Kp;
+      if(spd < 80) spd = 0; // Stall Prevention
+      setMotors(spd, 1, 1);
+    } else {
+      // Too Close or Perfect -> Stop
+      setMotors(0, 0, 0);
+    }
+    delay(30); // Prevent sensor jamming
+  }
+}
+
+// ==========================
+// 5. WEBSOCKET EVENTS
+// ==========================
+void onWebSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+  if (type == WStype_TEXT) {
+    String txt = (char*)payload;
+    
+    // Safety Lockout if Crashed (Unlock with STOP)
+    if (driveMode == "CRASHED" && txt != "STOP") return; 
+
+    // Command Parsing
+    if (txt == "FWD") { driveMode="MANUAL"; setMotors(currentSpeed, 1, 1); }
+    else if (txt == "BACK") { driveMode="MANUAL"; setMotors(currentSpeed, -1, -1); }
+    else if (txt == "LEFT") { driveMode="MANUAL"; setMotors(currentSpeed, -1, 1); }
+    else if (txt == "RIGHT") { driveMode="MANUAL"; setMotors(currentSpeed, 1, -1); }
+    else if (txt == "STOP") { driveMode="MANUAL"; setMotors(0, 0, 0); }
+    else if (txt == "CRUISE") { driveMode="CRUISE"; }
+    else if (txt.startsWith("SPEED:")) {
+      currentSpeed = txt.substring(6).toInt();
+    }
+  }
+}
+
+// ==========================
+// 6. VIDEO STREAM HANDLER
+// ==========================
+void handleStream() {
+  WiFiClient client = server.client();
+  String response = "HTTP/1.1 200 OK\r\nContent-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n";
+  server.sendContent(response);
+
+  while (true) {
+    camera_fb_t * fb = esp_camera_fb_get();
+    if (!fb) break;
+
+    String header = "--frame\r\nContent-Type: image/jpeg\r\nContent-Length: " + String(fb->len) + "\r\n\r\n";
+    server.sendContent(header);
+    client.write(fb->buf, fb->len);
+    server.sendContent("\r\n");
+    esp_camera_fb_return(fb);
+    
+    driveLoop(); // <--- CRITICAL: Runs controls DURING video stream
+    
+    if (!client.connected()) break;
+  }
+}
+
+// ==========================
+// 7. WEBSITE HTML/JS
+// ==========================
+const char index_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE HTML><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; text-align: center; background-color: #111; color: white; user-select: none; }
+    #stream-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; background: black; border-bottom: 2px solid #333; }
+    img { width: 100%; transform: rotate(180deg); display: block; } 
+    
+    button { background-color: #4CAF50; color: white; padding: 15px; border: none; font-size: 20px; margin: 5px; border-radius: 10px; width: 85px; touch-action: manipulation; box-shadow: 0 4px #2e7d32; }
+    button:active { transform: translateY(2px); box-shadow: 0 1px #2e7d32; }
+    .stop { background-color: #f44336; box-shadow: 0 4px #c62828; }
+    .stop:active { box-shadow: 0 1px #c62828; }
+    .cruise { background-color: #2196F3; width: 280px; margin-top: 15px; font-weight: bold; }
+    
+    #status { margin-top: 10px; font-weight: bold; color: #FFC107; height: 30px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div id="stream-container"><img src="/stream"></div>
+  
+  <p>SPEED: <span id="spdVal">200</span></p>
+  <input type="range" min="0" max="255" value="200" style="width:250px" oninput="sendSpeed(this.value)">
+  <br>
+  
+  <button ontouchstart="send('FWD')" ontouchend="send('STOP')">FWD</button><br>
+  <button ontouchstart="send('LEFT')" ontouchend="send('STOP')">LFT</button>
+  <button class="stop" onclick="send('STOP')">STOP</button>
+  <button ontouchstart="send('RIGHT')" ontouchend="send('STOP')">RGT</button><br>
+  <button ontouchstart="send('BACK')" ontouchend="send('STOP')">BCK</button>
+  <br>
+  <button class="cruise" onclick="send('CRUISE')">START ADAPTIVE CRUISE</button>
+  
+  <div id="status">CONNECTING...</div>
+
+  <script>
+    var ws;
+    function initWS() {
+      // Auto-connect to Port 81
+      ws = new WebSocket('ws://' + window.location.hostname + ':81/');
+      
+      ws.onopen = function() {
+        document.getElementById("status").innerText = "🟢 SYSTEM ONLINE";
+        document.getElementById("status").style.color = "#4CAF50";
+      };
+      
+      ws.onmessage = function(event) {
+        try {
+          var data = JSON.parse(event.data);
+          if(data.status == "CRASHED") {
+            document.getElementById("status").innerText = "⚠️ CRASH DETECTED!";
+            document.getElementById("status").style.color = "red";
+          } else if (data.status == "CRUISE") {
+            document.getElementById("status").innerText = "🔵 TRACKING | Dist: " + data.dist + "cm";
+            document.getElementById("status").style.color = "#2196F3";
+          }
+        } catch(e) {}
+      };
+      
+      ws.onclose = function() { 
+        document.getElementById("status").innerText = "🔴 DISCONNECTED"; 
+        setTimeout(initWS, 1000); 
+      };
+    }
+
+    function send(cmd) { if(ws.readyState===1) ws.send(cmd); }
+    function sendSpeed(val) { 
+      document.getElementById("spdVal").innerText = val;
+      if(ws.readyState===1) ws.send("SPEED:" + val); 
+    }
+    
+    window.onload = initWS;
+  </script>
+</body></html>)rawliteral";
+
+// ==========================
+// 8. SETUP & MAIN LOOP
+// ==========================
+void setup() {
+  Serial.begin(115200);
+
+  // Motor Pins
+  ledcSetup(chA1, freq, res); ledcAttachPin(PIN_AIN1, chA1);
+  ledcSetup(chA2, freq, res); ledcAttachPin(PIN_AIN2, chA2);
+  ledcSetup(chB1, freq, res); ledcAttachPin(PIN_BIN1, chB1);
+  ledcSetup(chB2, freq, res); ledcAttachPin(PIN_BIN2, chB2);
+
+  startCamera();
+  
+  // Sensors
+  Wire.begin(PIN_SDA, PIN_SCL);
+  mpu.begin();
+  // mpu.setAccelerometerRange(MPU6050_RANGE_8_G); // Optional: Adjust sensitivity
+
+  // --- HOTSPOT CONNECTION ---
+  if (!WiFi.config(local_IP, gateway, subnet)) {
+    Serial.println("STA Failed to configure");
+  }
+  WiFi.begin(ssid, password);
+
+  Serial.print("Connecting to Hotspot");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected! IP: ");
+  Serial.println(WiFi.localIP());
+
+  // Start Servers
+  server.on("/", []() { server.send(200, "text/html", index_html); });
+  server.on("/stream", handleStream);
+  server.begin();
+
+  webSocket.begin();
+  webSocket.onEvent(onWebSocketEvent);
+}
+
+void loop() {
+  server.handleClient(); // Handle Website Loading
+  driveLoop();           // Handle Robot Logic
+}
